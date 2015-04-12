@@ -6,12 +6,12 @@ We're currently in the process of setting up github. Will be updated soon.
 
 Current functionality:
 * Visual interface
-  * Game & player info 
-    * View basic save game information
-    * Edit player money
-    * Remove mods from the save game
- * Known types
-  * Known types determine what you can view in the encyclopedia
+ * Game & player info 
+  * View basic save game information
+  * Edit player money
+  * Remove mods from the save game
+* Known types
+ * Known types determine what you can view in the encyclopedia
   * Add known type lists
   * Add known types
  * Skunk
