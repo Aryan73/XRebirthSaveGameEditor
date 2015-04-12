@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0F82BF2B-A8F3-4BE8-A97A-FF446355C00F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>X_Rebirth_Save_Game_Editor</RootNamespace>
+    <AssemblyName>X_Rebirth_Save_Game_Editor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>ftp://badaeva.nl/web/publish/xrebirth/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://badaeva.nl/publish/xrebirth/</InstallUrl>
+    <SupportUrl>http://forum.egosoft.com/viewtopic.php%3ft=375817&amp;postdays=0&amp;postorder=asc&amp;start=0</SupportUrl>
+    <ProductName>X-Rebirth Save Game Editor</ProductName>
+    <PublisherName>Nemesis</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>install.html</WebPage>
+    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationVersion>0.1.21.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>900A6863D4F5FE66A32A8D58529BB4A2C65A26B9</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>X_Rebirth_Save_Game_Editor_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CatDatExtractor.cs" />
+    <Compile Include="DataStructure\CelestialbodyData.cs" />
+    <Compile Include="DataStructure\ClusterData.cs" />
+    <Compile Include="DataStructure\NPCsData.cs" />
+    <Compile Include="DataStructure\FactionData.cs" />
+    <Compile Include="DataStructure\FactionsData.cs" />
+    <Compile Include="DataStructure\FIleData\DirectoryObject.cs" />
+    <Compile Include="DataStructure\FIleData\FileObject.cs" />
+    <Compile Include="DataStructure\GalaxyData.cs" />
+    <Compile Include="DataStructure\HighwayData.cs" />
+    <Compile Include="DataStructure\LicenseData.cs" />
+    <Compile Include="DataStructure\NPCData.cs" />
+    <Compile Include="DataStructure\PatchInfoData.cs" />
+    <Compile Include="DataStructure\PlayerData.cs" />
+    <Compile Include="DataStructure\RelationData.cs" />
+    <Compile Include="DataStructure\SaveGameInfoData.cs" />
+    <Compile Include="DataStructure\RegionData.cs" />
+    <Compile Include="DataStructure\SectorData.cs" />
+    <Compile Include="DataStructure\ShipAmmunitionItemData.cs" />
+    <Compile Include="DataStructure\ShipCockpitData.cs" />
+    <Compile Include="DataStructure\ShipData.cs" />
+    <Compile Include="DataStructure\ShipEngineData.cs" />
+    <Compile Include="DataStructure\ShipInventoryItemData.cs" />
+    <Compile Include="DataStructure\ShipScannerData.cs" />
+    <Compile Include="DataStructure\ShipShieldData.cs" />
+    <Compile Include="DataStructure\ShipSoftwareData.cs" />
+    <Compile Include="DataStructure\ShipStorageData.cs" />
+    <Compile Include="DataStructure\ShipStorageItemData.cs" />
+    <Compile Include="DataStructure\ShipWeaponCycleSlotData.cs" />
+    <Compile Include="DataStructure\ShipWeaponData.cs" />
+    <Compile Include="DataStructure\TypeObject.cs" />
+    <Compile Include="DataStructure\UniverseSearchData.cs" />
+    <Compile Include="DataStructure\ZoneData.cs" />
+    <Compile Include="Enumarators\WeaponConnectionTypes.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCatDatExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCatDatExport.Designer.cs">
+      <DependentUpon>FormCatDatExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormFactions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFactions.Designer.cs">
+      <DependentUpon>FormFactions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormKnownTypes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormKnownTypes.Designer.cs">
+      <DependentUpon>FormKnownTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormNPCs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNPCs.Designer.cs">
+      <DependentUpon>FormNPCs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPlayerSkunk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPlayerSkunk.Designer.cs">
+      <DependentUpon>FormPlayerSkunk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSaveGameInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSaveGameInfo.Designer.cs">
+      <DependentUpon>FormSaveGameInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShipEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShipEditor.Designer.cs">
+      <DependentUpon>FormShipEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShipEditorCargo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShipEditorCargo.Designer.cs">
+      <DependentUpon>FormShipEditorCargo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormShipEditorInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormShipEditorInfo.Designer.cs">
+      <DependentUpon>FormShipEditorInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormUniverseEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormUniverseEditor.Designer.cs">
+      <DependentUpon>FormUniverseEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormXRebirthSaveGameEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormXRebirthSaveGameEditor.Designer.cs">
+      <DependentUpon>FormXRebirthSaveGameEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\SmartClientHandling.cs" />
+    <Compile Include="Helper\XMLFunctions.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveGameEditor.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCatDatExport.resx">
+      <DependentUpon>FormCatDatExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFactions.resx">
+      <DependentUpon>FormFactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormKnownTypes.resx">
+      <DependentUpon>FormKnownTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormNPCs.resx">
+      <DependentUpon>FormNPCs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPlayerSkunk.resx">
+      <DependentUpon>FormPlayerSkunk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSaveGameInfo.resx">
+      <DependentUpon>FormSaveGameInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormShipEditor.resx">
+      <DependentUpon>FormShipEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormShipEditorInfo.resx">
+      <DependentUpon>FormShipEditorInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormUniverseEditor.resx">
+      <DependentUpon>FormUniverseEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormXRebirthSaveGameEditor.resx">
+      <DependentUpon>FormXRebirthSaveGameEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="X_Rebirth_Save_Game_Editor_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

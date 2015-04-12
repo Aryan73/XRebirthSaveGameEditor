@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PublishUrlHistory>ftp://badaeva.nl/web/publish/xrebirth/|publish\</PublishUrlHistory>
+    <InstallUrlHistory>http://badaeva.nl/publish/xrebirth/</InstallUrlHistory>
+    <SupportUrlHistory>http://forum.egosoft.com/viewtopic.php%3ft=375817&amp;postdays=0&amp;postorder=asc&amp;start=0</SupportUrlHistory>
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>true</VerifyUploadedFiles>
+  </PropertyGroup>
+</Project>
