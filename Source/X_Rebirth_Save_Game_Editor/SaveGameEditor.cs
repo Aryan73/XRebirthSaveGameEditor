@@ -232,12 +232,29 @@ namespace X_Rebirth_Save_Game_Editor
 
                     try
                     {
-                        XmlWriter writer = XmlWriter.Create(location + SaveGameName, settings);
-                        SaveGame.Save(writer);
-                        //SaveGame.WriteTo(writer);
-                        writer.Flush();
-                        writer.Close();
-                        writer.Dispose();
+                        XmlWriter writer;
+                        string ext = Path.GetExtension(location + SaveGameName);
+                        if (ext == ".xml")
+                        {
+                            writer = XmlWriter.Create(location + SaveGameName, settings);
+                            SaveGame.Save(writer);
+                            //SaveGame.WriteTo(writer);
+                            writer.Flush();
+                            writer.Close();
+                            writer.Dispose();
+                        }
+                        else
+                        {
+                            using (FileStream SaveStream = File.Create(location + SaveGameName))
+                            {
+                                using (GZipStream zipStream = new GZipStream(SaveStream, CompressionMode.Compress))
+                                {
+                                    writer = XmlWriter.Create(zipStream, settings);
+                                    SaveGame.Save(writer);
+                                }
+                            }
+                        }
+                        
                     }
                     catch (Exception ex)
                     {
