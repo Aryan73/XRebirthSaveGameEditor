@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,7 +59,28 @@ namespace X_Rebirth_Save_Game_Editor
                 // Load the XML file into memory
                 SaveGame = null; // This makes sure the old data is properly disposed of
                 SaveGame = new XmlDocument();
-                SaveGame.Load(savePath);
+                // Test on the file extension
+                string ext = Path.GetExtension(savePath);
+                if (ext == ".xml")
+                {
+                    SaveGame.Load(savePath);
+                }
+                else if (ext == ".gz")
+                {
+                    using (FileStream fileStream = new FileStream(savePath, FileMode.Open))
+                    {
+                        using (GZipStream zipStream = new GZipStream(fileStream, CompressionMode.Decompress))
+                        {
+                            using (XmlReader xmlReader = XmlReader.Create(zipStream, new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Auto }))
+                            {
+                                xmlReader.MoveToContent();
+                                XmlDocument xmlDocument = new XmlDocument();
+                                SaveGame.Load(xmlReader);
+                            }
+                        }
+                    }
+                }
+                
                 saveGameNode = XMLFunctions.FindChild(SaveGame, "savegame");
                 universeNode = XMLFunctions.FindChild(saveGameNode, "universe");
             }
