@@ -69,8 +69,8 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                     {
                         return RelationsCache;
                     }
-
-                    foreach (XmlNode relation in node.ChildNodes)
+                    XmlNodeList relationList = node.SelectNodes("relation");
+                    foreach (XmlNode relation in relationList)
                     {
                         RelationsCache.Add(new RelationData(relation, cde));
                     }
