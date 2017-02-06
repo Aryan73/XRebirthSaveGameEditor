@@ -96,6 +96,7 @@
     <Compile Include="DataStructure\NPCData.cs" />
     <Compile Include="DataStructure\PatchInfoData.cs" />
     <Compile Include="DataStructure\PlayerData.cs" />
+    <Compile Include="DataStructure\BoosterData.cs" />
     <Compile Include="DataStructure\RelationData.cs" />
     <Compile Include="DataStructure\SaveGameInfoData.cs" />
     <Compile Include="DataStructure\RegionData.cs" />

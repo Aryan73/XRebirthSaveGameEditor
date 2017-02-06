@@ -15,6 +15,8 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         CatDatExtractor cde = null;
         List<LicenceData> LisencesCache = null;
         List<RelationData> RelationsCache = null;
+        // Ideally (to be similar to the savegame file), the boosters are member of the RelationData Lists
+        List<BoosterData> RelationsBoosterCache = null;
         #endregion
 
         #region Construnctors
@@ -80,6 +82,30 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             }
         }
 
+        public List<BoosterData> Boosters
+        {
+            get
+            {
+                if (RelationsBoosterCache == null)
+                {
+                    RelationsBoosterCache = new List<BoosterData>();
+                    XmlNode node = XMLFunctions.FindChild(FactionNode, "relations");
+
+                    if (node == null)
+                    {
+                        return RelationsBoosterCache;
+                    }
+                    XmlNodeList boosterList = node.SelectNodes("booster");
+                    foreach (XmlNode booster in boosterList)
+                    {
+                        RelationsBoosterCache.Add(new BoosterData(booster, cde));
+                    }
+                }
+
+                return RelationsBoosterCache;
+            }
+        }
+
         public void AddRelation(string faction, float value)
         {
             XmlNode relationsNode = XMLFunctions.FindChild(FactionNode, "relations");
@@ -96,8 +122,9 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         {
             relation.Remove();
             Relations.Remove(relation);
-            if (Relations.Count <= 0)
+            if (Relations.Count <= 0 && Boosters.Count <= 0)
             {
+                // Only removed if both Relations and Boosters are null (they have the same parent node "relations" in save file).
                 FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "relations"));
             }
         }
@@ -128,6 +155,28 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             if (Licences.Count <= 0)
             {
                 FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "licences"));
+            }
+        }
+
+        public void AddBooster(string faction, float value, float time)
+        {
+            XmlNode relationsNode = XMLFunctions.FindChild(FactionNode, "relations");
+            if (relationsNode == null)
+            {
+                relationsNode = FactionNode.OwnerDocument.CreateElement("relations");
+                FactionNode.AppendChild(relationsNode);
+            }
+            Boosters.Add(new BoosterData(faction, value, time, XMLFunctions.FindChild(FactionNode, "relations"), cde));
+        }
+
+        public void RemoveBooster(BoosterData booster)
+        {
+            booster.Remove();
+            Boosters.Remove(booster);
+            if (Boosters.Count <= 0 && Relations.Count <= 0)
+            {
+                // Only removed if both Relations and Boosters are null (they have the same parent node "relations" in save file).
+                FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "relations"));
             }
         }
 
