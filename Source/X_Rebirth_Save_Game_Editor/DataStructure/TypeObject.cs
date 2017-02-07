@@ -22,7 +22,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         string _name = null;
         string _componentRef = null;
         string _size = null;
-        string _translatedName
+        string _translatedName;
         bool? _isShip = null;
         KeyValuePair<string, string>? _dropDownValues = null;
         #endregion
