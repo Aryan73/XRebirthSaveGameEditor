@@ -11,6 +11,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
 {
     public class RelationData
     {
+        // Note: the relation value between two factions is set on both faction relation node and should (ideally) be equal.
         #region Members
         XmlNode RelationNode = null;
         CatDatExtractor cde = null;
