@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using X_Rebirth_Save_Game_Editor.Helper;
+using X_Rebirth_Save_Game_Editor.Logging;
 
 namespace X_Rebirth_Save_Game_Editor.DataStructure
 {
@@ -128,7 +129,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 relationsNode = TargetedFaction.FactionNode.OwnerDocument.CreateElement("relations");
                 TargetedFaction.FactionNode.AppendChild(relationsNode);
             }
-            Relations.Add(new RelationData(faction, value, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
+            TargetedFaction.Relations.Add(new RelationData(faction, value, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
         }
 
         public void RemoveRelation(RelationData relation)
@@ -139,6 +140,27 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             {
                 // Only removed if both Relations and Boosters are null (they have the same parent node "relations" in save file).
                 FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "relations"));
+            }
+        }
+
+        public void UpdateRelationPartners()
+        {
+            foreach (RelationData partner in RelationsCache)
+            {
+                float relation = partner.Relation;
+                string partnerName = partner.faction;
+                FactionData TargetedFaction = factionsData[partnerName];
+                RelationData TheRelation = null;
+                TargetedFaction.RelationsCache.Select(a => a.faction);
+                foreach (RelationData TempRelation in TargetedFaction.RelationsCache)
+                {
+                    if (TempRelation.faction == FactionName) { TheRelation = TempRelation; }
+                }
+                if (TheRelation != null)
+                {
+                    TheRelation.Relation = relation;
+                }
+                else { Logger.Error("A partner did not found the current faction in its relation list."); }
             }
         }
 

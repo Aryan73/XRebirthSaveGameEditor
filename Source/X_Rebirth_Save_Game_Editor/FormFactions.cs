@@ -18,6 +18,7 @@ namespace X_Rebirth_Save_Game_Editor
         static FormFactions instance = null;
         static object LockInstance = new object();
         SaveGameEditor sge = null;
+        FactionData Previousfaction = null;
         string StandardErrorText = "";
         CatDatExtractor cde = null;
         #endregion
@@ -74,10 +75,15 @@ namespace X_Rebirth_Save_Game_Editor
         {
             try
             {
+                if (Previousfaction != null)
+                {
+                    Previousfaction.UpdateRelationPartners();
+                }
                 if (comboBoxFaction.SelectedItem != null
                     && comboBoxFaction.Items.Contains(comboBoxFaction.SelectedItem)
                     )
                 {
+                    Previousfaction = null;
                     dataGridViewRelations.DataSource = null;
                     dataGridViewLicenses.DataSource = null;
                     FactionData faction = sge.Factions[(string)comboBoxFaction.SelectedItem];
@@ -86,8 +92,13 @@ namespace X_Rebirth_Save_Game_Editor
                     {
                         dataGridViewRelations.DataSource = faction.Relations;
                         dataGridViewLicenses.DataSource = faction.Licences;
+                        Previousfaction = (string)comboBoxFaction.SelectedItem;
                         comboBox1.Items.AddRange(cde.GetAllFactions().Where(a => a != comboBoxFaction.Text && !((List<RelationData>)dataGridViewRelations.DataSource).Exists(b => b.faction == a)).ToArray());
                     }
+                }
+                else
+                {
+                    Previousfaction = null;
                 }
             }
             catch (Exception ex)
