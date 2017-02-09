@@ -92,7 +92,7 @@ namespace X_Rebirth_Save_Game_Editor
                     {
                         dataGridViewRelations.DataSource = faction.Relations;
                         dataGridViewLicenses.DataSource = faction.Licences;
-                        Previousfaction = (string)comboBoxFaction.SelectedItem;
+                        Previousfaction = faction;
                         comboBox1.Items.AddRange(cde.GetAllFactions().Where(a => a != comboBoxFaction.Text && !((List<RelationData>)dataGridViewRelations.DataSource).Exists(b => b.faction == a)).ToArray());
                     }
                 }
@@ -103,8 +103,8 @@ namespace X_Rebirth_Save_Game_Editor
             }
             catch (Exception ex)
             {
-                Logger.Error("Unable to set the skunks engine.", ex);
-                MessageBox.Show("Unable to set the skunks engine." + "\n" + StandardErrorText);
+                Logger.Error("Unable to select the faction.", ex);
+                MessageBox.Show("Unable to select the faction." + "\n" + StandardErrorText);
             }
         }
 

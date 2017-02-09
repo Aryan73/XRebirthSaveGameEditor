@@ -151,8 +151,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 string partnerName = partner.faction;
                 FactionData TargetedFaction = factionsData[partnerName];
                 RelationData TheRelation = null;
-                TargetedFaction.RelationsCache.Select(a => a.faction);
-                foreach (RelationData TempRelation in TargetedFaction.RelationsCache)
+                foreach (RelationData TempRelation in TargetedFaction.Relations)
                 {
                     if (TempRelation.faction == FactionName) { TheRelation = TempRelation; }
                 }
