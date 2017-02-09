@@ -13,6 +13,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         #region Members
         XmlNode FactionNode = null;
         CatDatExtractor cde = null;
+        FactionsData factionsData = null;
         List<LicenceData> LisencesCache = null;
         List<RelationData> RelationsCache = null;
         // Ideally (to be similar to the savegame file), the boosters are member of the RelationData Lists
@@ -20,10 +21,11 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         #endregion
 
         #region Construnctors
-        public FactionData(XmlNode factionNode, CatDatExtractor cde)
+        public FactionData(XmlNode factionNode, CatDatExtractor cde, FactionsData factionsData)
         {
             FactionNode = factionNode;
             this.cde = cde;
+            this.factionsData = factionsData;
         }
 
         public FactionData(string factionName, XmlNode parent, CatDatExtractor cde)
@@ -108,14 +110,25 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
 
         public void AddRelation(string faction, float value)
         {
+            // On the selected faction toward the targeted one
             XmlNode relationsNode = XMLFunctions.FindChild(FactionNode, "relations");
             if (relationsNode == null)
             {
                 relationsNode = FactionNode.OwnerDocument.CreateElement("relations");
                 FactionNode.AppendChild(relationsNode);
             }
-
             Relations.Add(new RelationData(faction, value, XMLFunctions.FindChild(FactionNode, "relations"), cde));
+
+            // On the targeted faction toward the selected
+            string SelectedFaction = FactionName;
+            FactionData TargetedFaction = factionsData[faction];
+            relationsNode = XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations");
+            if (relationsNode == null)
+            {
+                relationsNode = TargetedFaction.FactionNode.OwnerDocument.CreateElement("relations");
+                TargetedFaction.FactionNode.AppendChild(relationsNode);
+            }
+            Relations.Add(new RelationData(faction, value, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
         }
 
         public void RemoveRelation(RelationData relation)
