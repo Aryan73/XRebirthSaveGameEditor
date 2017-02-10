@@ -163,6 +163,26 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             }
         }
 
+        public void UpdateBoosterPartners()
+        {
+            foreach (BoosterData partner in RelationsBoosterCache)
+            {
+                float relation = partner.Relation;
+                string partnerName = partner.faction;
+                FactionData TargetedFaction = factionsData[partnerName];
+                BoosterData TheBooster = null;
+                foreach (BoosterData TempRelation in TargetedFaction.Boosters)
+                {
+                    if (TempRelation.faction == FactionName) { TheBooster = TempRelation; }
+                }
+                if (TheBooster != null)
+                {
+                    TheBooster.Relation = relation;
+                }
+                else { Logger.Error("A partner did not found the current faction in its booster relation list."); }
+            }
+        }
+
         public void AddLicence(string licence, string faction)
         {
             XmlNode licencesNode = XMLFunctions.FindChild(FactionNode, "licences");

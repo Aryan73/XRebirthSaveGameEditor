@@ -77,7 +77,7 @@ namespace X_Rebirth_Save_Game_Editor
             {
                 if (Previousfaction != null)
                 {
-                    Previousfaction.UpdateRelationPartners();
+                    Previousfaction.UpdateBoosterPartners();
                 }
                 if (comboBoxFaction.SelectedItem != null
                     && comboBoxFaction.Items.Contains(comboBoxFaction.SelectedItem)
@@ -90,7 +90,7 @@ namespace X_Rebirth_Save_Game_Editor
 
                     if (faction != null)
                     {
-                        dataGridViewRelations.DataSource = faction.Relations;
+                        dataGridViewRelations.DataSource = faction.Boosters;
                         dataGridViewLicenses.DataSource = faction.Licences;
                         Previousfaction = faction;
                         comboBox1.Items.AddRange(cde.GetAllFactions().Where(a => a != comboBoxFaction.Text && !((List<RelationData>)dataGridViewRelations.DataSource).Exists(b => b.faction == a)).ToArray());
