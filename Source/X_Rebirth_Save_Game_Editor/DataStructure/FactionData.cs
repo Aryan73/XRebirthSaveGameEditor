@@ -234,7 +234,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 relationsNode = TargetedFaction.FactionNode.OwnerDocument.CreateElement("relations");
                 TargetedFaction.FactionNode.AppendChild(relationsNode);
             }
-            TargetedFaction.Boosters.Add(new BoosterData(faction, value, time, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
+            TargetedFaction.Boosters.Add(new BoosterData(SelectedFaction, value, time, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
         }
 
         public void RemoveBooster(BoosterData booster)
