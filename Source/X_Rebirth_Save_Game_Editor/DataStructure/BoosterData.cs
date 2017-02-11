@@ -29,7 +29,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             this.cde = cde;
         }
 
-        public BoosterData(string faction, float relation, float time, XmlNode parent, CatDatExtractor cde)
+        public BoosterData(string faction, float relation, double time, XmlNode parent, CatDatExtractor cde)
         {
             BoosterNode = parent.OwnerDocument.CreateElement("booster");
             BoosterNode.Attributes.Append(parent.OwnerDocument.CreateAttribute("faction"));
@@ -70,11 +70,11 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             }
         }
 
-        public float Time
+        public double Time
         {
             get
             {
-                float f = XmlConvert.ToSingle(XMLFunctions.GetSafeAttribute(BoosterNode, "time"));
+                double f = XmlConvert.ToDouble(XMLFunctions.GetSafeAttribute(BoosterNode, "time"));
                 return f;
             }
             set

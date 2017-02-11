@@ -168,6 +168,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             foreach (BoosterData partner in RelationsBoosterCache)
             {
                 float relation = partner.Relation;
+                double time = partner.Time;
                 string partnerName = partner.faction;
                 FactionData TargetedFaction = factionsData[partnerName];
                 BoosterData TheBooster = null;
@@ -178,6 +179,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 if (TheBooster != null)
                 {
                     TheBooster.Relation = relation;
+                    TheBooster.Time = time;
                 }
                 else { Logger.Error("A partner did not found the current faction in its booster relation list."); }
             }
@@ -212,8 +214,9 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             }
         }
 
-        public void AddBooster(string faction, float value, float time)
+        public void AddBooster(string faction, float value, double time)
         {
+            // On the selected faction toward the targeted one
             XmlNode relationsNode = XMLFunctions.FindChild(FactionNode, "relations");
             if (relationsNode == null)
             {
@@ -221,6 +224,17 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 FactionNode.AppendChild(relationsNode);
             }
             Boosters.Add(new BoosterData(faction, value, time, XMLFunctions.FindChild(FactionNode, "relations"), cde));
+
+            // On the targeted faction toward the selected
+            string SelectedFaction = FactionName;
+            FactionData TargetedFaction = factionsData[faction];
+            relationsNode = XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations");
+            if (relationsNode == null)
+            {
+                relationsNode = TargetedFaction.FactionNode.OwnerDocument.CreateElement("relations");
+                TargetedFaction.FactionNode.AppendChild(relationsNode);
+            }
+            TargetedFaction.Boosters.Add(new BoosterData(faction, value, time, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
         }
 
         public void RemoveBooster(BoosterData booster)
