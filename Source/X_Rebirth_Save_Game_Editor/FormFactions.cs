@@ -84,6 +84,7 @@ namespace X_Rebirth_Save_Game_Editor
                     )
                 {
                     Previousfaction = null;
+                    comboBox1.Items.Clear();
                     dataGridViewRelations.DataSource = null;
                     dataGridViewLicenses.DataSource = null;
                     FactionData faction = sge.Factions[(string)comboBoxFaction.SelectedItem];
