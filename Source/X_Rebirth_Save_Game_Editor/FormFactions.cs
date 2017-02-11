@@ -129,7 +129,7 @@ namespace X_Rebirth_Save_Game_Editor
 
         private void buttonAddRelation_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedItem != null || comboBox1.Items.Contains(comboBox1.SelectedItem))
+            if (comboBox1.SelectedItem == null || !comboBox1.Items.Contains(comboBox1.SelectedItem))
             {
                 MessageBox.Show("valid value must be selected from combobox");
                 return;
@@ -138,13 +138,13 @@ namespace X_Rebirth_Save_Game_Editor
             float f;
             if (float.TryParse(textBox1.Text, out f))
             {
-                sge.Factions[comboBoxFaction.Text].AddRelation(comboBox1.Text, f);
+                sge.Factions[comboBoxFaction.Text].AddBooster(comboBox1.Text, f, 0.000);
                 comboBox1.Text = "";
                 textBox1.Text = "";
                 comboBox1.Items.Clear();
-                comboBox1.Items.AddRange(cde.GetAllFactions().Where(a => a != comboBoxFaction.Text && !((List<RelationData>)dataGridViewRelations.DataSource).Exists(b => b.faction == a)).ToArray());
+                comboBox1.Items.AddRange(cde.GetAllFactions().Where(a => a != comboBoxFaction.Text && !((List<BoosterData>)dataGridViewRelations.DataSource).Exists(b => b.faction == a)).ToArray());
                 dataGridViewRelations.DataSource = null;
-                dataGridViewRelations.DataSource = sge.Factions[(string)comboBoxFaction.SelectedItem].Relations;
+                dataGridViewRelations.DataSource = sge.Factions[(string)comboBoxFaction.SelectedItem].Boosters;
             }
             else
             {
@@ -156,10 +156,10 @@ namespace X_Rebirth_Save_Game_Editor
         {
             foreach (DataGridViewRow row in dataGridViewRelations.SelectedRows)
             {
-                sge.Factions[comboBoxFaction.Text].RemoveRelation((RelationData)row.DataBoundItem);
+                sge.Factions[comboBoxFaction.Text].RemoveBooster((BoosterData)row.DataBoundItem);
             }
             dataGridViewRelations.DataSource = null;
-            dataGridViewRelations.DataSource = sge.Factions[(string)comboBoxFaction.SelectedItem].Relations;
+            dataGridViewRelations.DataSource = sge.Factions[(string)comboBoxFaction.SelectedItem].Boosters;
         }
 
         private void comboBox2_DropDown(object sender, EventArgs e)
