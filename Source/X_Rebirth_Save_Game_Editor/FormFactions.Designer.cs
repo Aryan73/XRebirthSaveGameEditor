@@ -195,6 +195,7 @@
             this.dataGridViewRelations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewRelations.Size = new System.Drawing.Size(363, 432);
             this.dataGridViewRelations.TabIndex = 0;
+            this.dataGridViewRelations.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewRelations_CellEndEdit);
             // 
             // splitContainer3
             // 

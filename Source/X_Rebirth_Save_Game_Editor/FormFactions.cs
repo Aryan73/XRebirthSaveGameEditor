@@ -218,6 +218,12 @@ namespace X_Rebirth_Save_Game_Editor
             }
         }
 
+        private void dataGridViewRelations_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            FactionData faction = sge.Factions[(string)comboBoxFaction.SelectedItem];
+            faction.UpdateBoosterPartners();
+        }
+
         // License governments are devided by spaces
     }
 }
