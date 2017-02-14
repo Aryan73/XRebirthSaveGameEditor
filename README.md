@@ -34,7 +34,11 @@ Current functionality:
     * Add marines
     * Remove ammunition
     * Remove marines
-* Factions (does not work as intended)
+* Factions
+  * Edit/Add standing between factions
+    * Removing a relation: set the value at 0
+	* Time column is the last time the standing has changed (set at 0 by default).
+  * Add/Remove lisences: **not tested**
 * NPCs
   * View all NPCs owned by faction
   * Edit single NPC attributes
