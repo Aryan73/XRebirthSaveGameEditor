@@ -27,6 +27,12 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             }
         }
         #endregion
+        
+        public FactionData AddFactionData(string name)
+        {
+            Factions.Add(new FactionData(name, FactionsNode, cde, this));
+            return this[name];
+        }
 
         public FactionData this[string factionName]
         {

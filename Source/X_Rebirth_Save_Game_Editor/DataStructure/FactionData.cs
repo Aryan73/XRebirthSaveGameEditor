@@ -29,11 +29,14 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             this.factionsData = factionsData;
         }
 
-        public FactionData(string factionName, XmlNode parent, CatDatExtractor cde)
+        public FactionData(string factionName, XmlNode parent, CatDatExtractor cde, FactionsData factionsData)
         {
             FactionNode = parent.OwnerDocument.CreateElement("faction");
+            parent.AppendChild(FactionNode);
             FactionNode.Attributes.Append(parent.OwnerDocument.CreateAttribute("id"));
             FactionNode.Attributes["id"].Value = factionName;
+            this.cde = cde;
+            this.factionsData = factionsData;
         }
         #endregion
 
@@ -228,6 +231,10 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             // On the targeted faction toward the selected
             string SelectedFaction = FactionName;
             FactionData TargetedFaction = factionsData[faction];
+            if (TargetedFaction==null)
+            {
+                TargetedFaction = factionsData.AddFactionData(faction);
+            }
             relationsNode = XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations");
             if (relationsNode == null)
             {
