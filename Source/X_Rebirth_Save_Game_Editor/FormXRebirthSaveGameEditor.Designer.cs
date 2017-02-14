@@ -240,7 +240,7 @@
             this.tabPageFactions.Size = new System.Drawing.Size(1791, 655);
             this.tabPageFactions.TabIndex = 4;
             this.tabPageFactions.Text = "Factions";
-            this.tabPageFactions.ToolTipText = "This functionality does not work yet. Please be patient ;)";
+            this.tabPageFactions.ToolTipText = "Only edit relations. Please be patient for the licenses ;)";
             // 
             // tabPageUniverseEditor
             // 
