@@ -377,21 +377,17 @@ namespace X_Rebirth_Save_Game_Editor
                         {
                             string[] iden = pair.Value.Substring(1, pair.Value.Length - 2).Replace(" ", "").Split(',');
 
+                            pageNode = t.SelectSingleNode("//page [@id='" + iden[0] + "']");
                             if (pageNode == null)
                             {
-                                pageNode = t.SelectSingleNode("//page[@id='" + iden[0] + "']");
-
-                                if (pageNode == null)
-                                {
-                                    Logger.Warning("Unable to locate page node " + iden[0]);
-                                }
+                                Logger.Warning("Unable to locate page node " + iden[0]);
                             }
 
                             tNode = pageNode.SelectSingleNode("t[@id='" + iden[1] + "']");
 
                             if (tNode == null)
                             {
-                                Logger.Warning("Unable to locate t node");
+                                Logger.Warning("Unable to locate t node "+ iden[1]+" in page id="+ iden[0]);
                             }
 
                             if (tNode.FirstChild == null)
