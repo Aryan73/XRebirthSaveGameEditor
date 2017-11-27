@@ -375,6 +375,8 @@ namespace X_Rebirth_Save_Game_Editor
                     {
                         try
                         {
+                            // For case with two groups of name : "{20101,703} {20106,101}" it doesn't work
+                            // A solution, replace "}{" by "," and count the size of iden to see how many place
                             string[] iden = pair.Value.Substring(1, pair.Value.Length - 2).Replace(" ", "").Split(',');
 
                             pageNode = t.SelectSingleNode("//page [@id='" + iden[0] + "']");
