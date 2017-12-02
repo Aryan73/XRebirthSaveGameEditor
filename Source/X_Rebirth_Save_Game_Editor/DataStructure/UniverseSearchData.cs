@@ -44,6 +44,10 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             Zones = false;
             Highways = false;
             CelestialBodies = false;
+        }
+
+        public void ResetObjectsOnly()
+        {
             BuildingCVs = false;
             OtherShips = false;
             Stations = false;
