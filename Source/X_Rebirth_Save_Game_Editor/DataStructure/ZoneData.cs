@@ -41,6 +41,10 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                             {
                                 Ships.Add(new ShipData(childNode, cde));
                             }
+                            else if(childNode.HasChildNodes && childNode.FirstChild.Attributes["class"] != null && childNode.FirstChild.Attributes["class"].Value.StartsWith("ship"))
+                            {
+                                Ships.Add(new ShipData(childNode, cde));
+                            }
                         }
                         catch (Exception ex)
                         {
