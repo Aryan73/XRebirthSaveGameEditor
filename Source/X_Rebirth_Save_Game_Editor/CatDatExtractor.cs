@@ -424,30 +424,36 @@ namespace X_Rebirth_Save_Game_Editor
             try
             {
                 XmlDocument t = new XmlDocument();
+                XmlNode pageNode, tNode;
                 t.LoadXml(Structure.GetFile(new List<string>() { "t" }, "0001-L0" + language + ".xml").GetFileAsString(BasePath));
-                string[] iden = identifier.Substring(1, identifier.Length - 2).Replace(" ", "").Split(',');
-                XmlNode pageNode = t.SelectSingleNode("//page[@id='" + iden[0] + "']");
-                if (pageNode == null)
+                string[] iden = identifier.Replace(" ", "").Replace("\\(", "").Replace("\\)", "").Replace("}{", ",").Replace("{", "").Replace("}", "").Split(',');
+                string text = null;
+                //string[] iden = identifier.Substring(1, identifier.Length - 2).Replace(" ", "").Split(',');
+                for (int i = 0; i <= iden.Length / 2; i += 2)
                 {
-                    throw new Exception("Unable to locate page node");
-                }
-                XmlNode tNode = pageNode.SelectSingleNode("t[@id='" + iden[1] + "']");
-                if (tNode == null)
-                {
-                    throw new Exception("Unable to locate t node");
-                }
+                    pageNode = t.SelectSingleNode("//page [@id='" + iden[i] + "']");
+                    if (pageNode == null)
+                    {
+                        throw new Exception("Unable to locate page node");
+                    }
 
-                if (tNode.FirstChild == null)
-                {
-                    throw new Exception("Unable to locate first child of t node");
-                }
+                    tNode = pageNode.SelectSingleNode("t[@id='" + iden[i + 1] + "']");
+                    if (tNode == null)
+                    {
+                        throw new Exception("Unable to locate t node");
+                    }
 
-                if (tNode.FirstChild.Value.StartsWith("{"))
-                {
-                    return GetTranslation(tNode.FirstChild.Value.Substring(0, tNode.FirstChild.Value.IndexOf("}") + 1) , language);
+                    if (tNode.FirstChild == null)
+                    {
+                        throw new Exception("Unable to locate first child of t node");
+                    }
+                    if (tNode.FirstChild.Value.StartsWith("{"))
+                    {
+                        text += GetTranslation(tNode.FirstChild.Value.Substring(0, tNode.FirstChild.Value.IndexOf("}") + 1), language)+" ";
+                    }
+                    text += tNode.FirstChild.Value + " ";
                 }
-
-                return tNode.FirstChild.Value;
+                return text.Substring(0, text.Length - 1);
             }
             catch (Exception ex)
             {
