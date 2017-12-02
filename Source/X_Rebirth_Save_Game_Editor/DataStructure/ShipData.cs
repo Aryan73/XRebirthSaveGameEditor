@@ -340,7 +340,13 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         /// <returns></returns>
         public bool IsBuildingCV()
         {
-            if (ShipMacro == "units_size_xl_builder_ship_macro") return true;
+            if (ShipMacro == "units_size_xl_builder_ship_macro"    ||
+                ShipMacro == "units_size_xl_builder_ship_dv_macro" ||
+                ShipMacro == "units_size_xl_builder_ship_ol_macro" ||
+                ShipMacro == "units_size_xl_builder_ship_plot_01_macro")
+                { return true; }
+            else if(ShipMacro.StartsWith("units_size_xl_builder_ship"))
+                { return true; }
             return false;
         }
 
