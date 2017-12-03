@@ -469,19 +469,20 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         }
 
         /// <summary>
-        /// Return the ressources that Construction Vessel need for next construction.
+        /// Return the node containing requested ressources for construction.
         /// </summary>
         /// <returns></returns>
-        public List<KeyValuePair<string, string>> GetNeededRessources()
+        public XmlNode GetNeededRessourcesNode()
         {
-            List<KeyValuePair<string, string>> Needed = new List<KeyValuePair<string, string>>();
-            if (!IsBuildingCV()) { return Needed; }
+            XmlNode ressourcesNode = null;
+
+            if (!IsBuildingCV()) { return ressourcesNode; }
 
             XmlNode childNode = XMLFunctions.FindChild(ShipNode.FirstChild, "connections");
             if (childNode == null)
             {
                 Logger.Warning("CV: connections node not found");
-                return Needed;
+                return ressourcesNode;
             }
             XmlNode buildModuleNode = null;
             foreach (XmlNode connectionNode in childNode.ChildNodes)
@@ -495,27 +496,46 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             if (buildModuleNode == null)
             {
                 Logger.Warning("CV: no connection_buildmodule01 node found");
-                return Needed;
+                return ressourcesNode;
             }
             XmlNode buildNode = XMLFunctions.FindChild(buildModuleNode.FirstChild, "build");
             if (buildNode == null)
             {
                 Logger.Warning("CV: no build node found");
-                return Needed;
+                return ressourcesNode;
             }
-            foreach (XmlNode wareNode in buildNode.FirstChild.ChildNodes)
+            ressourcesNode = buildNode.FirstChild;
+            return ressourcesNode;
+        }
+
+        /// <summary>
+        /// Return the ressources that Construction Vessel need for next construction.
+        /// </summary>
+        /// <returns></returns>
+        public List<KeyValuePair<string, string>> GetNeededRessources()
+        {
+            List<KeyValuePair<string, string>> Needed = new List<KeyValuePair<string, string>>();
+            XmlNode RessourcesNode = GetNeededRessourcesNode();
+            foreach (XmlNode wareNode in RessourcesNode.ChildNodes)
             {
                 string amount = wareNode.Attributes["amount"] != null ? wareNode.Attributes["amount"].Value : "1";
                 Needed.Add(new KeyValuePair<string, string>(wareNode.Attributes["ware"].Value, amount));
             }
 
-
             return Needed;
+        }
+
+        /// <summary>
+        /// Fill the cargo of the Construction Vessel to fill requested item
+        /// </summary>
+        /// <returns></returns>
+        public void FillNeededRessources()
+        {
         }
         #endregion
 
-        #region Properties
-        #region Skunk
+            #region Properties
+            #region Skunk
         public string InstalledShield1
         {
             get
