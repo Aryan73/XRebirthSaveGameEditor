@@ -335,7 +335,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         }
 
         /// <summary>
-        /// If the macro is units_size_xl_builder_ship_macro then the ship is the skunk.
+        /// If the macro is units_size_xl_builder_ship_macro then the ship is a Construction Vessel.
         /// </summary>
         /// <returns></returns>
         public bool IsBuildingCV()
@@ -466,6 +466,51 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 nodes.Add(ShipId, ShipName);
                 nodes[ShipId].Tag = this;
             }
+        }
+
+        /// <summary>
+        /// Return the ressources that Construction Vessel need for next construction.
+        /// </summary>
+        /// <returns></returns>
+        public List<KeyValuePair<string, string>> GetNeededRessources()
+        {
+            List<KeyValuePair<string, string>> Needed = new List<KeyValuePair<string, string>>();
+            if (!IsBuildingCV()) { return Needed; }
+
+            XmlNode childNode = XMLFunctions.FindChild(ShipNode.FirstChild, "connections");
+            if (childNode == null)
+            {
+                Logger.Warning("CV: connections node not found");
+                return Needed;
+            }
+            XmlNode buildModuleNode = null;
+            foreach (XmlNode connectionNode in childNode.ChildNodes)
+            {
+                if (connectionNode.Attributes["connection"].Value == "connection_buildmodule01")
+                {
+                    buildModuleNode = connectionNode;
+                    break;
+                }
+            }
+            if (buildModuleNode == null)
+            {
+                Logger.Warning("CV: no connection_buildmodule01 node found");
+                return Needed;
+            }
+            XmlNode buildNode = XMLFunctions.FindChild(buildModuleNode.FirstChild, "build");
+            if (buildNode == null)
+            {
+                Logger.Warning("CV: no build node found");
+                return Needed;
+            }
+            foreach (XmlNode wareNode in buildNode.FirstChild.ChildNodes)
+            {
+                string amount = wareNode.Attributes["amount"] != null ? wareNode.Attributes["amount"].Value : "1";
+                Needed.Add(new KeyValuePair<string, string>(wareNode.Attributes["ware"].Value, amount));
+            }
+
+
+            return Needed;
         }
         #endregion
 
