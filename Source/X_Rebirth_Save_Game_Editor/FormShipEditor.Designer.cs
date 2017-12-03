@@ -30,12 +30,14 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageShipInfo = new System.Windows.Forms.TabPage();
+            this.tabPageShipCargo = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageShipInfo);
+            this.tabControl1.Controls.Add(this.tabPageShipCargo);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -51,6 +53,15 @@
             this.tabPageShipInfo.TabIndex = 0;
             this.tabPageShipInfo.Text = "Info";
             this.tabPageShipInfo.UseVisualStyleBackColor = true;
+            // 
+            // tabPageShipCargo
+            // 
+            this.tabPageShipCargo.Location = new System.Drawing.Point(4, 22);
+            this.tabPageShipCargo.Name = "tabPageShipCargo";
+            this.tabPageShipCargo.Size = new System.Drawing.Size(780, 613);
+            this.tabPageShipCargo.TabIndex = 1;
+            this.tabPageShipCargo.Text = "Cargo";
+            this.tabPageShipCargo.UseVisualStyleBackColor = true;
             // 
             // FormShipEditor
             // 
@@ -69,6 +80,6 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageShipInfo;
-
+        private System.Windows.Forms.TabPage tabPageShipCargo;
     }
 }
