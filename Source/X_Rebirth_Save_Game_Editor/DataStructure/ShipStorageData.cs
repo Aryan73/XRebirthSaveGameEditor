@@ -73,9 +73,11 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 {
                     try
                     {
+                        ShipStorageItems = new List<ShipStorageItemData>();
                         foreach (XmlNode node in ShipStorageNode.FirstChild.FirstChild.FirstChild.ChildNodes)
                         {
                             ShipStorageItems.Add(new ShipStorageItemData(node, cde));
+                            int i = 0;
                         }
                     }
                     catch (Exception ex)
@@ -83,7 +85,6 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                         Logger.Error("Unable to get cargo", ex);
                     }
                 }
-
                 return ShipStorageItems;
             }
         }
