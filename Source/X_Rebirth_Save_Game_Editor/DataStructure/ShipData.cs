@@ -47,21 +47,21 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
 
                 // Storages
                 XmlNode storage = null;
-                storage = shipNode.SelectSingleNode("//connection[@connection='connection_storage01']");
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage01']");
                 if (storage != null)
                 {
                     ShipStorage.Add(1, new ShipStorageData(storage, cde));
                 }
 
                 storage = null;
-                storage = shipNode.SelectSingleNode("//connection[@connection='connection_storage02']");
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage02']");
                 if (storage != null)
                 {
                     ShipStorage.Add(2, new ShipStorageData(storage, cde));
                 }
 
                 storage = null;
-                storage = shipNode.SelectSingleNode("//connection[@connection='connection_storage03']");
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage03']");
                 if (storage != null)
                 {
                     ShipStorage.Add(3, new ShipStorageData(storage, cde));
@@ -501,7 +501,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             XmlNode buildNode = XMLFunctions.FindChild(buildModuleNode.FirstChild, "build");
             if (buildNode == null)
             {
-                Logger.Warning("CV: no build node found");
+                Logger.Verbose("CV: no build node found");
                 return ressourcesNode;
             }
             ressourcesNode = buildNode.FirstChild;
@@ -515,7 +515,24 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         public List<KeyValuePair<string, string>> GetNeededRessources()
         {
             List<KeyValuePair<string, string>> Needed = new List<KeyValuePair<string, string>>();
+            if (!IsBuildingCV())
+            {
+                Needed.Add(new KeyValuePair<string, string>("Not a Construction Vessel", ""));
+                return Needed;
+            }
             XmlNode RessourcesNode = GetNeededRessourcesNode();
+            // Case without build order
+            if (RessourcesNode == null)
+            {
+                Needed.Add(new KeyValuePair<string, string>("No build order", ""));
+                return Needed;
+            }
+            // Case where construction have already begin
+            if (RessourcesNode.ParentNode.Attributes["state"].Value == "building")
+            {
+                Needed.Add(new KeyValuePair<string, string>("Currently building", ""));
+                return Needed;
+            }
             foreach (XmlNode wareNode in RessourcesNode.ChildNodes)
             {
                 string amount = wareNode.Attributes["amount"] != null ? wareNode.Attributes["amount"].Value : "1";
@@ -532,10 +549,33 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         public void FillNeededRessources()
         {
         }
+
+        /// <summary>
+        /// Return the item stored in the container.
+        /// </summary>
+        /// <returns></returns>
+        public List<KeyValuePair<string, string>> GetStoredItem()
+        {
+            XmlNode celui = ShipNode;
+            List<KeyValuePair<string, string>> storage = new List<KeyValuePair<string, string>>();
+            foreach (KeyValuePair<int, ShipStorageData> entry in ShipStorage)
+            {
+                if (!entry.Value.ComponentMacro.Contains("fuel"))
+                {
+                    foreach (ShipStorageItemData ware in entry.Value.Items)
+                    {
+                        string amount = ware.Amount.ToString();
+                        if (amount == "0") { amount = "1"; }
+                        storage.Add(new KeyValuePair<string, string>(ware.Ware, amount));
+                    }
+                }
+            }
+            return storage;
+        }
         #endregion
 
-            #region Properties
-            #region Skunk
+        #region Properties
+        #region Skunk
         public string InstalledShield1
         {
             get
