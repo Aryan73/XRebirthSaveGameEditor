@@ -77,7 +77,6 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                         foreach (XmlNode node in ShipStorageNode.FirstChild.FirstChild.FirstChild.ChildNodes)
                         {
                             ShipStorageItems.Add(new ShipStorageItemData(node, cde));
-                            int i = 0;
                         }
                     }
                     catch (Exception ex)
