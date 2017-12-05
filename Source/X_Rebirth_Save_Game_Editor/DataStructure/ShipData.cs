@@ -71,14 +71,14 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage04']");
                 if (storage != null)
                 {
-                    ShipStorage.Add(3, new ShipStorageData(storage, cde));
+                    ShipStorage.Add(4, new ShipStorageData(storage, cde));
                 }
 
                 storage = null;
                 storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage05']");
                 if (storage != null)
                 {
-                    ShipStorage.Add(3, new ShipStorageData(storage, cde));
+                    ShipStorage.Add(5, new ShipStorageData(storage, cde));
                 }
 
 
