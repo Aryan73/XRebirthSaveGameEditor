@@ -63,15 +63,49 @@ namespace X_Rebirth_Save_Game_Editor
 
         public void ChangeFormState()
         {
+            // Part related to Cargo
+            try
+            {
+                dataGridViewCargo.DataSource = Ship.GetStoredItem();
+                if (dataGridViewCargo.DataSource != null)
+                {
+                    dataGridViewCargo.Enabled = true;
+                    buttonCargoAdd.Enabled = false;
+                    buttonCargoDelete.Enabled = false;
+                }
+                else
+                {
+                    dataGridViewCargo.Enabled = false;
+                    buttonCargoAdd.Enabled = false;
+                    buttonCargoDelete.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Failed to retrieve needed ressources", ex);
+                dataGridViewCargo.Enabled = false;
+                FillCargoNeeded.Enabled = true;
+            }
+            // Part related to CV ships
             try
             {
                 dataGridNeeded.DataSource = Ship.GetNeededRessources();
-                dataGridNeeded.Enabled = false; // User don't have to use it, just read.
+                if (dataGridNeeded.DataSource != null)
+                {
+                    dataGridNeeded.Enabled  = true;
+                    FillCargoNeeded.Enabled = true;
+                }
+                else
+                {
+                    dataGridNeeded.Enabled  = false;
+                    FillCargoNeeded.Enabled = false;
+                }
             }
             catch (Exception ex)
             {
                 Logger.Error("Failed to retrieve needed ressources", ex);
                 dataGridNeeded.Enabled = false;
+                FillCargoNeeded.Enabled = true;
             }
         }
 
@@ -79,5 +113,10 @@ namespace X_Rebirth_Save_Game_Editor
         {
         }
         #endregion
+
+        private void FillCargoNeeded_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
