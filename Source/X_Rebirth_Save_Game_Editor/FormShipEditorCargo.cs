@@ -116,7 +116,7 @@ namespace X_Rebirth_Save_Game_Editor
 
         private void FillCargoNeeded_Click(object sender, EventArgs e)
         {
-
+            Ship.FillNeededRessources();
         }
     }
 }

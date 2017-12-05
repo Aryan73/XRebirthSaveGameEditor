@@ -562,6 +562,47 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         /// <returns></returns>
         public void FillNeededRessources()
         {
+            // Retrieve needed ressources
+            XmlNode RessourcesNode = GetNeededRessourcesNode();
+            if (RessourcesNode == null) { return; }
+            if (RessourcesNode.ParentNode.Attributes["state"].Value == "building") { return; }
+            // Retrieve cargo node
+            ShipStorageData StorageData = null;
+            foreach (KeyValuePair<int, ShipStorageData> entry in ShipStorage)
+            {
+                if (entry.Value.ComponentMacro == "storage_ship_xl_universal_01_macro")
+                {
+                    StorageData = entry.Value;
+                }
+            }
+
+            // Loop on needed ware
+            bool done;
+            foreach (XmlNode neededWareNode in RessourcesNode.ChildNodes)
+            {
+                Int64 neededAmount = 1;
+                done = false;
+                string neededWare = neededWareNode.Attributes["ware"].Value;
+                if (neededWareNode.Attributes["amount"] != null)
+                {
+                    Int64.TryParse(neededWareNode.Attributes["amount"].Value, out neededAmount);
+                }
+                // Loop on ware in cargo
+                foreach (ShipStorageItemData ware in StorageData.Items)
+                {
+                    if (ware.Ware == neededWare)
+                    {
+                        ware.Amount = neededAmount;
+                        done = true;
+                        break;
+                    }                    
+                }
+                if (!done)
+                {
+                    StorageData.addItem(neededWare, neededAmount);
+                }
+            }
+            return;
         }
 
         /// <summary>
@@ -570,7 +611,6 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         /// <returns></returns>
         public List<KeyValuePair<string, string>> GetStoredItem()
         {
-            XmlNode celui = ShipNode;
             List<KeyValuePair<string, string>> storage = new List<KeyValuePair<string, string>>();
             foreach (KeyValuePair<int, ShipStorageData> entry in ShipStorage)
             {

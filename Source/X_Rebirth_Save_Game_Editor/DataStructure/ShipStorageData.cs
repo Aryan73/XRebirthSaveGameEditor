@@ -32,6 +32,50 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         }
         #endregion
 
+        #region Methods
+        public void addItem(string ware, Int64 amount)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(ware))  { throw new Exception("ware must contain a value");  }
+                if (amount <= 0) { throw new Exception("amount must be greather than 0"); }
+
+                XmlNode summarydNode = ShipStorageNode.FirstChild.FirstChild.FirstChild;
+                XmlNode newItemNode = null;
+
+                try
+                {
+                    newItemNode = summarydNode.OwnerDocument.CreateNode(XmlNodeType.Element, "ware", "");
+                    newItemNode.Attributes.Append(summarydNode.OwnerDocument.CreateAttribute("ware"));
+                    newItemNode.Attributes["ware"].Value = ware;
+                    if (amount > 1)
+                    {
+                        newItemNode.Attributes.Append(summarydNode.OwnerDocument.CreateAttribute("amount"));
+                        newItemNode.Attributes["amount"].Value = amount.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Unable to create the new item node", ex);
+                }
+
+                try
+                {
+                    summarydNode.AppendChild(newItemNode);
+                    ShipStorageItems.Add(new ShipStorageItemData(newItemNode, cde));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Unable to list the new item", ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Unable to add new item in storage", ex);
+            }
+        }
+        #endregion
+
         #region Properties
         public string Connection
         {
@@ -85,6 +129,14 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                     }
                 }
                 return ShipStorageItems;
+            }
+        }
+
+        public XmlNode shipStorageNode
+        {
+            get
+            {
+                return ShipStorageNode;
             }
         }
         #endregion
