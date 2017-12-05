@@ -67,6 +67,20 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                     ShipStorage.Add(3, new ShipStorageData(storage, cde));
                 }
 
+                storage = null;
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage04']");
+                if (storage != null)
+                {
+                    ShipStorage.Add(3, new ShipStorageData(storage, cde));
+                }
+
+                storage = null;
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage05']");
+                if (storage != null)
+                {
+                    ShipStorage.Add(3, new ShipStorageData(storage, cde));
+                }
+
 
                 #region Skunk
                 if (IsSkunk()) // Some prats should only be handled for skunk at the moment
