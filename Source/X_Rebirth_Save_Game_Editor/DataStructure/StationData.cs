@@ -113,7 +113,11 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         /// <returns></returns>
         public void FillNeededRessources(XmlNode shipQueued)
         {
-            Logger.Verbose("FillNeededRessources(XmlNode shipQueued) not yet implemented");
+            XmlNode resourcesNode = QueuedShips[shipQueued];
+            foreach (XmlNode ware in resourcesNode.ChildNodes)
+            {
+                XMLFunctions.SetSafeAttribute(ware, "amount", "0");
+            }
             return;
         }
 
