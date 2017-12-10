@@ -187,7 +187,11 @@ namespace X_Rebirth_Save_Game_Editor
             if (subForm != null)
             {
                 splitContainerMain.Panel2.Controls.Remove(subForm);
-                ((FormShipEditor)subForm).RemoveInstance();
+                Type subformType = subForm.GetType();
+                if (subformType == typeof(FormShipEditor)) { ((FormShipEditor)subForm).RemoveInstance(); }
+                else if (subformType == typeof(FormStationEditor)) { ((FormStationEditor)subForm).RemoveInstance(); }
+                else { Logger.Error("Universe Editor: unknow Form class"); }
+
                 subForm = null;
             }
 
@@ -199,6 +203,16 @@ namespace X_Rebirth_Save_Game_Editor
                 subForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
                 subForm.Dock = DockStyle.Fill;
                 ((FormShipEditor)subForm).ChangeFormState();
+                subForm.Show();
+            }
+            else if (e.Node.Tag.GetType().ToString() == "X_Rebirth_Save_Game_Editor.DataStructure.StationData")
+            {
+                subForm = FormStationEditor.Instance((StationData)e.Node.Tag, cde);
+                subForm.TopLevel = false;
+                splitContainerMain.Panel2.Controls.Add(subForm);
+                subForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                subForm.Dock = DockStyle.Fill;
+                ((FormStationEditor)subForm).ChangeFormState();
                 subForm.Show();
             }
         }
