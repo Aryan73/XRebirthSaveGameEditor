@@ -16,6 +16,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         XmlNode ZoneNode = null;
         string ZoneName = null;
         List<ShipData> Ships = new List<ShipData>();
+        List<StationData> Stations = new List<StationData>();
         CatDatExtractor cde = null;
         #endregion
 
@@ -44,6 +45,10 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                             else if(childNode.HasChildNodes && childNode.FirstChild.Attributes["class"] != null && childNode.FirstChild.Attributes["class"].Value.StartsWith("ship"))
                             {
                                 Ships.Add(new ShipData(childNode, cde));
+                            }
+                            else if (childNode.FirstChild != null && childNode.FirstChild.Attributes["class"] != null && childNode.FirstChild.Attributes["class"].Value == "station")
+                            {
+                                Stations.Add(new StationData(childNode, cde));
                             }
                         }
                         catch (Exception ex)
@@ -89,6 +94,11 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             foreach (ShipData ship in Ships)
             {
                 ship.GetTreeView(zoneNodes, searchData);
+            }
+
+            foreach (StationData station in Stations)
+            {
+                station.GetTreeView(zoneNodes, searchData);
             }
         }
     }

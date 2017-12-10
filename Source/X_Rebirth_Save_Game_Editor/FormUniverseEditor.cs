@@ -106,7 +106,7 @@ namespace X_Rebirth_Save_Game_Editor
                     case "Other ships":
                         SearchData.OtherShips = true;
                         break;
-                    case "Stations (Not yet)":
+                    case "Stations":
                         SearchData.Stations = true;
                         break;
                     case "NPCs (Not yet)":
@@ -143,7 +143,7 @@ namespace X_Rebirth_Save_Game_Editor
                 case "Other ships":
                     SearchData.OtherShips = newState;
                     break;
-                case "Stations (Not yet)":
+                case "Stations":
                     SearchData.Stations = newState;
                     break;
                 case "NPCs (Not yet)":

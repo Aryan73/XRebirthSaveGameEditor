@@ -156,7 +156,7 @@
             this.checkedListBox2.Items.AddRange(new object[] {
             "Building CVs",
             "Other ships",
-            "Stations (Not yet)",
+            "Stations",
             "NPCs (Not yet)"});
             this.checkedListBox2.Location = new System.Drawing.Point(0, 0);
             this.checkedListBox2.Name = "checkedListBox2";
