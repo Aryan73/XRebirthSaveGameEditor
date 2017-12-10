@@ -25,6 +25,7 @@ namespace X_Rebirth_Save_Game_Editor
         Dictionary<string, Dictionary<string, string>> AllTypes = new Dictionary<string, Dictionary<string, string>>();
         Object AllTypesLock = new Object();
         Dictionary<string, string> ShipNamesCache = new Dictionary<string, string>();
+        Dictionary<string, string> StationNamesCache = new Dictionary<string, string>();
         Dictionary<string, List<string>> BasketsCache = null;
         List<TypeObject> AllTypesNew = null;
         #endregion
@@ -571,6 +572,33 @@ namespace X_Rebirth_Save_Game_Editor
             {
                 ShipNamesCache.Add(shipMacro, shipMacro);
                 return shipMacro;
+            }
+        }
+
+        public string GetDefaultStationName(string stationMacro)
+        {
+            if (StationNamesCache.Keys.Contains(stationMacro))
+            {
+                return ShipNamesCache[stationMacro];
+            }
+
+            XmlDocument t = new XmlDocument();
+            try
+            {
+                t.LoadXml(Structure.GetFile(stationMacro + ".xml").GetFileAsString(BasePath));
+                string name = t.SelectSingleNode("//identification").Attributes["name"].Value;
+                if (name.StartsWith("{"))
+                {
+                    name = GetTranslation(name);
+                }
+
+                StationNamesCache.Add(stationMacro, name);
+                return name;
+            }
+            catch
+            {
+                StationNamesCache.Add(stationMacro, stationMacro);
+                return stationMacro;
             }
         }
 

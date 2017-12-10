@@ -117,5 +117,25 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure.FIleData
                 }
             }
         }
+
+        public FileObject GetFile(string file)
+        {
+            FileObject fo = null;
+            List<FileObject> f = Files.Where(a => a.Name == file).ToList();
+            if (f.Count <= 0)
+            {
+                foreach (DirectoryObject dir in SubDirectories)
+                {
+                    fo = dir.GetFile(file);
+                    if (fo != null) { return fo; }
+                }
+            }
+            else
+            {
+                fo = f.First();
+                return fo;
+            }
+            return fo;
+        }
     }
 }
