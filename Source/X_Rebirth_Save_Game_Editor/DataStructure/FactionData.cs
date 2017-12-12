@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using X_Rebirth_Save_Game_Editor.Helper;
+using X_Rebirth_Save_Game_Editor.Logging;
 
 namespace X_Rebirth_Save_Game_Editor.DataStructure
 {
@@ -13,22 +14,29 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         #region Members
         XmlNode FactionNode = null;
         CatDatExtractor cde = null;
+        FactionsData factionsData = null;
         List<LicenceData> LisencesCache = null;
         List<RelationData> RelationsCache = null;
+        // Ideally (to be similar to the savegame file), the boosters are member of the RelationData Lists
+        List<BoosterData> RelationsBoosterCache = null;
         #endregion
 
         #region Construnctors
-        public FactionData(XmlNode factionNode, CatDatExtractor cde)
+        public FactionData(XmlNode factionNode, CatDatExtractor cde, FactionsData factionsData)
         {
             FactionNode = factionNode;
             this.cde = cde;
+            this.factionsData = factionsData;
         }
 
-        public FactionData(string factionName, XmlNode parent, CatDatExtractor cde)
+        public FactionData(string factionName, XmlNode parent, CatDatExtractor cde, FactionsData factionsData)
         {
             FactionNode = parent.OwnerDocument.CreateElement("faction");
+            parent.AppendChild(FactionNode);
             FactionNode.Attributes.Append(parent.OwnerDocument.CreateAttribute("id"));
             FactionNode.Attributes["id"].Value = factionName;
+            this.cde = cde;
+            this.factionsData = factionsData;
         }
         #endregion
 
@@ -69,8 +77,8 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                     {
                         return RelationsCache;
                     }
-
-                    foreach (XmlNode relation in node.ChildNodes)
+                    XmlNodeList relationList = node.SelectNodes("relation");
+                    foreach (XmlNode relation in relationList)
                     {
                         RelationsCache.Add(new RelationData(relation, cde));
                     }
@@ -80,25 +88,103 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             }
         }
 
+        public List<BoosterData> Boosters
+        {
+            get
+            {
+                if (RelationsBoosterCache == null)
+                {
+                    RelationsBoosterCache = new List<BoosterData>();
+                    XmlNode node = XMLFunctions.FindChild(FactionNode, "relations");
+
+                    if (node == null)
+                    {
+                        return RelationsBoosterCache;
+                    }
+                    XmlNodeList boosterList = node.SelectNodes("booster");
+                    foreach (XmlNode booster in boosterList)
+                    {
+                        RelationsBoosterCache.Add(new BoosterData(booster, cde));
+                    }
+                }
+
+                return RelationsBoosterCache;
+            }
+        }
+
         public void AddRelation(string faction, float value)
         {
+            // On the selected faction toward the targeted one
             XmlNode relationsNode = XMLFunctions.FindChild(FactionNode, "relations");
             if (relationsNode == null)
             {
                 relationsNode = FactionNode.OwnerDocument.CreateElement("relations");
                 FactionNode.AppendChild(relationsNode);
             }
-
             Relations.Add(new RelationData(faction, value, XMLFunctions.FindChild(FactionNode, "relations"), cde));
+
+            // On the targeted faction toward the selected
+            string SelectedFaction = FactionName;
+            FactionData TargetedFaction = factionsData[faction];
+            relationsNode = XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations");
+            if (relationsNode == null)
+            {
+                relationsNode = TargetedFaction.FactionNode.OwnerDocument.CreateElement("relations");
+                TargetedFaction.FactionNode.AppendChild(relationsNode);
+            }
+            TargetedFaction.Relations.Add(new RelationData(faction, value, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
         }
 
         public void RemoveRelation(RelationData relation)
         {
             relation.Remove();
             Relations.Remove(relation);
-            if (Relations.Count <= 0)
+            if (Relations.Count <= 0 && Boosters.Count <= 0)
             {
+                // Only removed if both Relations and Boosters are null (they have the same parent node "relations" in save file).
                 FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "relations"));
+            }
+        }
+
+        public void UpdateRelationPartners()
+        {
+            foreach (RelationData partner in RelationsCache)
+            {
+                float relation = partner.Relation;
+                string partnerName = partner.faction;
+                FactionData TargetedFaction = factionsData[partnerName];
+                RelationData TheRelation = null;
+                foreach (RelationData TempRelation in TargetedFaction.Relations)
+                {
+                    if (TempRelation.faction == FactionName) { TheRelation = TempRelation; }
+                }
+                if (TheRelation != null)
+                {
+                    TheRelation.Relation = relation;
+                }
+                else { Logger.Error("A partner did not found the current faction in its relation list."); }
+            }
+        }
+
+        public void UpdateBoosterPartners()
+        {
+            foreach (BoosterData partner in RelationsBoosterCache)
+            {
+                float relation = partner.Relation;
+                double time = partner.Time;
+                string partnerName = partner.faction;
+                FactionData TargetedFaction = factionsData[partnerName];
+                BoosterData TheBooster = null;
+                foreach (BoosterData TempRelation in TargetedFaction.Boosters)
+                {
+                    if (TempRelation.faction == FactionName) { TheBooster = TempRelation; }
+                }
+                if (TheBooster != null)
+                {
+                    TheBooster.Relation = relation;
+                    TheBooster.Time = time;
+                }
+                else { Logger.Error("A partner did not found the current faction in its booster relation list."); }
             }
         }
 
@@ -128,6 +214,44 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
             if (Licences.Count <= 0)
             {
                 FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "licences"));
+            }
+        }
+
+        public void AddBooster(string faction, float value, double time)
+        {
+            // On the selected faction toward the targeted one
+            XmlNode relationsNode = XMLFunctions.FindChild(FactionNode, "relations");
+            if (relationsNode == null)
+            {
+                relationsNode = FactionNode.OwnerDocument.CreateElement("relations");
+                FactionNode.AppendChild(relationsNode);
+            }
+            Boosters.Add(new BoosterData(faction, value, time, XMLFunctions.FindChild(FactionNode, "relations"), cde));
+
+            // On the targeted faction toward the selected
+            string SelectedFaction = FactionName;
+            FactionData TargetedFaction = factionsData[faction];
+            if (TargetedFaction==null)
+            {
+                TargetedFaction = factionsData.AddFactionData(faction);
+            }
+            relationsNode = XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations");
+            if (relationsNode == null)
+            {
+                relationsNode = TargetedFaction.FactionNode.OwnerDocument.CreateElement("relations");
+                TargetedFaction.FactionNode.AppendChild(relationsNode);
+            }
+            TargetedFaction.Boosters.Add(new BoosterData(SelectedFaction, value, time, XMLFunctions.FindChild(TargetedFaction.FactionNode, "relations"), cde));
+        }
+
+        public void RemoveBooster(BoosterData booster)
+        {
+            booster.Remove();
+            Boosters.Remove(booster);
+            if (Boosters.Count <= 0 && Relations.Count <= 0)
+            {
+                // Only removed if both Relations and Boosters are null (they have the same parent node "relations" in save file).
+                FactionNode.RemoveChild(XMLFunctions.FindChild(FactionNode, "relations"));
             }
         }
 

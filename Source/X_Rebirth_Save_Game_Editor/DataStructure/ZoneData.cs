@@ -28,23 +28,30 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 // 1 Zone: <connection connection="tzonecluster_d_sector18_zone45_connection"> -> <component class="zone" macro="tzonecluster_d_sector18_zone45_macro" connection="sector" owner="canteran" knownto="player" id="[0x1c2c5]">
                 ZoneNode = zoneNode.FirstChild;
                 ZoneName = zoneNode.Attributes["connection"].Value;
-
-                XmlNode childNode = XMLFunctions.FindChild(ZoneNode, "connections").FirstChild;
-
-                while (childNode != null)
+                // Some zone does not have any "connections" node.
+                if (XMLFunctions.FindChild(ZoneNode, "connections") != null)
                 {
-                    try
+                    XmlNode childNode = XMLFunctions.FindChild(ZoneNode, "connections").FirstChild;
+
+                    while (childNode != null)
                     {
-                        if (childNode.Attributes["connection"].Value == "ships")
+                        try
                         {
-                            Ships.Add(new ShipData(childNode, cde));
+                            if (childNode.Attributes["connection"].Value == "ships")
+                            {
+                                Ships.Add(new ShipData(childNode, cde));
+                            }
+                            else if(childNode.HasChildNodes && childNode.FirstChild.Attributes["class"] != null && childNode.FirstChild.Attributes["class"].Value.StartsWith("ship"))
+                            {
+                                Ships.Add(new ShipData(childNode, cde));
+                            }
                         }
+                        catch (Exception ex)
+                        {
+                            Logger.Error("Unable to add child node for zone", ex);
+                        }
+                        childNode = childNode.NextSibling;
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.Error("Unable to add child node for zone", ex);
-                    }
-                    childNode = childNode.NextSibling;
                 }
             }
             catch (Exception ex)

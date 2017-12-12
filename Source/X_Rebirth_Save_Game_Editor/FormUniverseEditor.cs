@@ -69,7 +69,7 @@ namespace X_Rebirth_Save_Game_Editor
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            SearchData.ResetAreasOnly();
+            SearchData.Reset();
             SearchData.Faction = comboBoxFaction.SelectedItem.ToString();
             foreach(object item in checkedListBox1.CheckedItems)
             {
@@ -95,7 +95,7 @@ namespace X_Rebirth_Save_Game_Editor
                         break;         
                 }
             }
-            
+
             foreach (object item in checkedListBox2.CheckedItems)
             {
                 switch (item.ToString())
@@ -103,7 +103,7 @@ namespace X_Rebirth_Save_Game_Editor
                     case "Building CVs":
                         SearchData.BuildingCVs = true;
                         break;
-                    case "Other ships (Not yet)":
+                    case "Other ships":
                         SearchData.OtherShips = true;
                         break;
                     case "Stations (Not yet)":
@@ -111,7 +111,8 @@ namespace X_Rebirth_Save_Game_Editor
                         break;
                     case "NPCs (Not yet)":
                         SearchData.NPCs = true;
-                        break;                }
+                        break;
+                }
             }
 
             bool newState = e.NewValue == CheckState.Checked;
@@ -139,7 +140,7 @@ namespace X_Rebirth_Save_Game_Editor
                 case "Building CVs":
                     SearchData.BuildingCVs = newState;
                     break;
-                case "Other ships (Not yet)":
+                case "Other ships":
                     SearchData.OtherShips = newState;
                     break;
                 case "Stations (Not yet)":
@@ -147,7 +148,7 @@ namespace X_Rebirth_Save_Game_Editor
                     break;
                 case "NPCs (Not yet)":
                     SearchData.NPCs = newState;
-                    break; 
+                    break;
             }
             treeViewNavigation.Nodes.Clear();
             sge.Galaxy.GetTreeView(treeViewNavigation.Nodes, SearchData);
@@ -162,7 +163,7 @@ namespace X_Rebirth_Save_Game_Editor
                 comboBoxFaction.Items.Clear();
                 comboBoxFaction.Items.Add("All");
                 comboBoxFaction.Items.AddRange(sge.Factions.FationNames.ToArray());
-                comboBoxFaction.SelectedItem = comboBoxFaction.Items[0];
+                comboBoxFaction.SelectedItem = comboBoxFaction.Items[comboBoxFaction.Items.IndexOf("player")];
                 comboBoxFaction.SelectedIndexChanged += comboBoxFaction_SelectedIndexChanged;
             }
             catch (Exception ex)

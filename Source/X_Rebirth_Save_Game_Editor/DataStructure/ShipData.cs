@@ -47,24 +47,38 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
 
                 // Storages
                 XmlNode storage = null;
-                storage = shipNode.SelectSingleNode("//connection[@connection='connection_storage01']");
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage01']");
                 if (storage != null)
                 {
                     ShipStorage.Add(1, new ShipStorageData(storage, cde));
                 }
 
                 storage = null;
-                storage = shipNode.SelectSingleNode("//connection[@connection='connection_storage02']");
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage02']");
                 if (storage != null)
                 {
                     ShipStorage.Add(2, new ShipStorageData(storage, cde));
                 }
 
                 storage = null;
-                storage = shipNode.SelectSingleNode("//connection[@connection='connection_storage03']");
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage03']");
                 if (storage != null)
                 {
                     ShipStorage.Add(3, new ShipStorageData(storage, cde));
+                }
+
+                storage = null;
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage04']");
+                if (storage != null)
+                {
+                    ShipStorage.Add(4, new ShipStorageData(storage, cde));
+                }
+
+                storage = null;
+                storage = shipNode.SelectSingleNode(".//connection[@connection='connection_storage05']");
+                if (storage != null)
+                {
+                    ShipStorage.Add(5, new ShipStorageData(storage, cde));
                 }
 
 
@@ -335,12 +349,18 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
         }
 
         /// <summary>
-        /// If the macro is units_size_xl_builder_ship_macro then the ship is the skunk.
+        /// If the macro is units_size_xl_builder_ship_macro then the ship is a Construction Vessel.
         /// </summary>
         /// <returns></returns>
         public bool IsBuildingCV()
         {
-            if (ShipMacro == "units_size_xl_builder_ship_macro") return true;
+            if (ShipMacro == "units_size_xl_builder_ship_macro"    ||
+                ShipMacro == "units_size_xl_builder_ship_dv_macro" ||
+                ShipMacro == "units_size_xl_builder_ship_ol_macro" ||
+                ShipMacro == "units_size_xl_builder_ship_plot_01_macro")
+                { return true; }
+            else if(ShipMacro.StartsWith("units_size_xl_builder_ship"))
+                { return true; }
             return false;
         }
 
@@ -460,6 +480,151 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 nodes.Add(ShipId, ShipName);
                 nodes[ShipId].Tag = this;
             }
+        }
+
+        /// <summary>
+        /// Return the node containing requested ressources for construction.
+        /// </summary>
+        /// <returns></returns>
+        public XmlNode GetNeededRessourcesNode()
+        {
+            XmlNode ressourcesNode = null;
+
+            if (!IsBuildingCV()) { return ressourcesNode; }
+
+            XmlNode childNode = XMLFunctions.FindChild(ShipNode.FirstChild, "connections");
+            if (childNode == null)
+            {
+                Logger.Warning("CV: connections node not found");
+                return ressourcesNode;
+            }
+            XmlNode buildModuleNode = null;
+            foreach (XmlNode connectionNode in childNode.ChildNodes)
+            {
+                if (connectionNode.Attributes["connection"].Value == "connection_buildmodule01")
+                {
+                    buildModuleNode = connectionNode;
+                    break;
+                }
+            }
+            if (buildModuleNode == null)
+            {
+                Logger.Warning("CV: no connection_buildmodule01 node found");
+                return ressourcesNode;
+            }
+            XmlNode buildNode = XMLFunctions.FindChild(buildModuleNode.FirstChild, "build");
+            if (buildNode == null)
+            {
+                Logger.Verbose("CV: no build node found");
+                return ressourcesNode;
+            }
+            ressourcesNode = buildNode.FirstChild;
+            return ressourcesNode;
+        }
+
+        /// <summary>
+        /// Return the ressources that Construction Vessel need for next construction.
+        /// </summary>
+        /// <returns></returns>
+        public List<KeyValuePair<string, string>> GetNeededRessources()
+        {
+            List<KeyValuePair<string, string>> Needed = new List<KeyValuePair<string, string>>();
+            if (!IsBuildingCV())
+            {
+                Needed.Add(new KeyValuePair<string, string>("Not a Construction Vessel", ""));
+                return Needed;
+            }
+            XmlNode RessourcesNode = GetNeededRessourcesNode();
+            // Case without build order
+            if (RessourcesNode == null)
+            {
+                Needed.Add(new KeyValuePair<string, string>("No build order", ""));
+                return Needed;
+            }
+            // Case where construction have already begin
+            if (RessourcesNode.ParentNode.Attributes["state"].Value == "building")
+            {
+                Needed.Add(new KeyValuePair<string, string>("Currently building", ""));
+                return Needed;
+            }
+            foreach (XmlNode wareNode in RessourcesNode.ChildNodes)
+            {
+                string amount = wareNode.Attributes["amount"] != null ? wareNode.Attributes["amount"].Value : "1";
+                Needed.Add(new KeyValuePair<string, string>(wareNode.Attributes["ware"].Value, amount));
+            }
+
+            return Needed;
+        }
+
+        /// <summary>
+        /// Fill the cargo of the Construction Vessel to fill requested item
+        /// </summary>
+        /// <returns></returns>
+        public void FillNeededRessources()
+        {
+            // Retrieve needed ressources
+            XmlNode RessourcesNode = GetNeededRessourcesNode();
+            if (RessourcesNode == null) { return; }
+            if (RessourcesNode.ParentNode.Attributes["state"].Value == "building") { return; }
+            // Retrieve cargo node
+            ShipStorageData StorageData = null;
+            foreach (KeyValuePair<int, ShipStorageData> entry in ShipStorage)
+            {
+                if (entry.Value.ComponentMacro == "storage_ship_xl_universal_01_macro")
+                {
+                    StorageData = entry.Value;
+                }
+            }
+
+            // Loop on needed ware
+            bool done;
+            foreach (XmlNode neededWareNode in RessourcesNode.ChildNodes)
+            {
+                Int64 neededAmount = 1;
+                done = false;
+                string neededWare = neededWareNode.Attributes["ware"].Value;
+                if (neededWareNode.Attributes["amount"] != null)
+                {
+                    Int64.TryParse(neededWareNode.Attributes["amount"].Value, out neededAmount);
+                }
+                // Loop on ware in cargo
+                foreach (ShipStorageItemData ware in StorageData.Items)
+                {
+                    if (ware.Ware == neededWare)
+                    {
+                        ware.Amount = neededAmount;
+                        done = true;
+                        break;
+                    }                    
+                }
+                if (!done)
+                {
+                    StorageData.addItem(neededWare, neededAmount);
+                }
+            }
+            return;
+        }
+
+        /// <summary>
+        /// Return the item stored in the container.
+        /// </summary>
+        /// <returns></returns>
+        public List<KeyValuePair<string, string>> GetStoredItem()
+        {
+            List<KeyValuePair<string, string>> storage = new List<KeyValuePair<string, string>>();
+            foreach (KeyValuePair<int, ShipStorageData> entry in ShipStorage)
+            {
+                if (!entry.Value.ComponentMacro.Contains("fuel"))
+                {
+                    foreach (ShipStorageItemData ware in entry.Value.Items)
+                    {
+                        string amount = ware.Amount.ToString();
+                        if (amount == "0") { amount = "1"; }
+                        storage.Add(new KeyValuePair<string, string>(ware.Ware, amount));
+                    }
+                }
+            }
+            return storage;
         }
         #endregion
 

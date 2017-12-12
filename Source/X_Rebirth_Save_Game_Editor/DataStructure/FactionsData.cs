@@ -23,10 +23,16 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
 
             foreach (XmlNode node in factionsNode.ChildNodes)
             {
-                Factions.Add(new FactionData(node, cde));
+                Factions.Add(new FactionData(node, cde, this));
             }
         }
         #endregion
+        
+        public FactionData AddFactionData(string name)
+        {
+            Factions.Add(new FactionData(name, FactionsNode, cde, this));
+            return this[name];
+        }
 
         public FactionData this[string factionName]
         {

@@ -27,25 +27,27 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 // 1 Region: <connection connection="region_zone_011_connection"> -> <component class="region" macro="region_zone_011_macro" connection="cluster" id="[0x17266]">
                 RegionNode = regionNode.FirstChild;
                 RegionName = regionNode.Attributes["connection"].Value;
-
-                XmlNode childNode = XMLFunctions.FindChild(RegionNode, "connections").FirstChild;
-
-                this.cde = cde;
-
-                while (childNode != null)
+                // Some region does not have any "connections" node.
+                if (XMLFunctions.FindChild(RegionNode, "connections") != null)
                 {
-                    try
+                    XmlNode childNode = XMLFunctions.FindChild(RegionNode, "connections").FirstChild;
+                    this.cde = cde;
+
+                    while (childNode != null)
                     {
-                        if (childNode.Attributes["connection"].Value == "ships")
+                        try
                         {
-                            Ships.Add(new ShipData(childNode, cde));
+                            if (childNode.Attributes["connection"].Value == "ships")
+                            {
+                                Ships.Add(new ShipData(childNode, cde));
+                            }
                         }
+                        catch (Exception ex)
+                        {
+                            Logger.Error("Unable to add child to region.", ex);
+                        }
+                        childNode = childNode.NextSibling;
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.Error("Unable to add child to region.", ex);
-                    }
-                    childNode = childNode.NextSibling;
                 }
             }
             catch (Exception ex)

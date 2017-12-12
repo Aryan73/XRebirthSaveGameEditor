@@ -19,6 +19,7 @@ namespace X_Rebirth_Save_Game_Editor
         CatDatExtractor cde = null;
         ShipData Ship = null;
         FormShipEditorInfo ShipInfoForm = null;
+        FormShipEditorCargo ShipCargoForm = null;
         #endregion
 
         #region Constructors
@@ -57,6 +58,8 @@ namespace X_Rebirth_Save_Game_Editor
                 {
                     ShipInfoForm.RemoveInstance();
                     ShipInfoForm = null;
+                    ShipCargoForm.RemoveInstance();
+                    ShipCargoForm = null;
                     instance = null;
                 }
             }
@@ -73,6 +76,16 @@ namespace X_Rebirth_Save_Game_Editor
                 ShipInfoForm.Dock = DockStyle.Fill;
                 ShipInfoForm.ChangeFormState();
                 ShipInfoForm.Show();
+            }
+            if (ShipCargoForm == null)
+            {
+                ShipCargoForm = FormShipEditorCargo.Instance(Ship, cde);
+                ShipCargoForm.TopLevel = false;
+                tabPageShipCargo.Controls.Add(ShipCargoForm);
+                ShipCargoForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                ShipCargoForm.Dock = DockStyle.Fill;
+                ShipCargoForm.ChangeFormState();
+                ShipCargoForm.Show();
             }
         }
 

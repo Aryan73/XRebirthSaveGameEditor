@@ -41,7 +41,6 @@
             this.buttonAddRelation = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-            this.buttonRemoveRelation = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBoxLicenses = new System.Windows.Forms.GroupBox();
             this.splitContainerLicenses = new System.Windows.Forms.SplitContainer();
@@ -77,7 +76,6 @@
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
-            this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
             this.groupBoxLicenses.SuspendLayout();
@@ -195,6 +193,7 @@
             this.dataGridViewRelations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewRelations.Size = new System.Drawing.Size(363, 432);
             this.dataGridViewRelations.TabIndex = 0;
+            this.dataGridViewRelations.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewRelations_CellEndEdit);
             // 
             // splitContainer3
             // 
@@ -257,27 +256,12 @@
             this.splitContainer5.Location = new System.Drawing.Point(0, 0);
             this.splitContainer5.Name = "splitContainer5";
             // 
-            // splitContainer5.Panel1
-            // 
-            this.splitContainer5.Panel1.Controls.Add(this.buttonRemoveRelation);
-            // 
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.textBox1);
             this.splitContainer5.Size = new System.Drawing.Size(363, 47);
             this.splitContainer5.SplitterDistance = 121;
             this.splitContainer5.TabIndex = 0;
-            // 
-            // buttonRemoveRelation
-            // 
-            this.buttonRemoveRelation.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buttonRemoveRelation.Location = new System.Drawing.Point(0, 0);
-            this.buttonRemoveRelation.Name = "buttonRemoveRelation";
-            this.buttonRemoveRelation.Size = new System.Drawing.Size(121, 47);
-            this.buttonRemoveRelation.TabIndex = 0;
-            this.buttonRemoveRelation.Text = "Remove row";
-            this.buttonRemoveRelation.UseVisualStyleBackColor = true;
-            this.buttonRemoveRelation.Click += new System.EventHandler(this.buttonRemoveRelation_Click);
             // 
             // textBox1
             // 
@@ -453,7 +437,6 @@
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
-            this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
             this.splitContainer5.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
@@ -497,7 +480,6 @@
         private System.Windows.Forms.Button buttonAddRelation;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.SplitContainer splitContainer5;
-        private System.Windows.Forms.Button buttonRemoveRelation;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.SplitContainer splitContainer7;
