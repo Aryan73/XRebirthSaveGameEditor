@@ -19,7 +19,7 @@ namespace X_Rebirth_Save_Game_Editor
         CatDatExtractor cde = null;
         StationData Station = null;
         FormStationEditorInfo StationInfoForm = null;
-        //FormStationEditorCargo StationCargoForm = null;
+        FormStationEditorQueued StationQueuedForm = null;
         #endregion
 
         #region Constructors
@@ -58,8 +58,11 @@ namespace X_Rebirth_Save_Game_Editor
                 {
                     StationInfoForm.RemoveInstance();
                     StationInfoForm = null;
-                    //StationCargoForm.RemoveInstance();
-                    //StationCargoForm = null;
+                    if (StationQueuedForm != null)
+                    {
+                        StationQueuedForm.RemoveInstance();
+                        StationQueuedForm = null;
+                    }
                     instance = null;
                 }
             }
@@ -77,16 +80,16 @@ namespace X_Rebirth_Save_Game_Editor
                 StationInfoForm.ChangeFormState();
                 StationInfoForm.Show();
             }
-            //if (StationCargoForm == null)
-            //{
-            //    StationCargoForm = FormStationEditorCargo.Instance(Station, cde);
-            //    StationCargoForm.TopLevel = false;
-            //    tabPageStationCargo.Controls.Add(StationCargoForm);
-            //    StationCargoForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            //    StationCargoForm.Dock = DockStyle.Fill;
-            //    StationCargoForm.ChangeFormState();
-            //    StationCargoForm.Show();
-            //}
+            if (StationQueuedForm == null && Station.IsShipyard())
+            {
+                StationQueuedForm = FormStationEditorQueued.Instance(Station, cde);
+                StationQueuedForm.TopLevel = false;
+                tabPageQueudShips.Controls.Add(StationQueuedForm);
+                StationQueuedForm.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+                StationQueuedForm.Dock = DockStyle.Fill;
+                StationQueuedForm.ChangeFormState();
+                StationQueuedForm.Show();
+            }
         }
         #endregion
     }

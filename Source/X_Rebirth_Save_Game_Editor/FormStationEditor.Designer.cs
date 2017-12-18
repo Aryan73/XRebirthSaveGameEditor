@@ -30,14 +30,14 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageStationInfo = new System.Windows.Forms.TabPage();
-            this.tabPageStationCargo = new System.Windows.Forms.TabPage();
+            this.tabPageQueudShips = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageStationInfo);
-            this.tabControl1.Controls.Add(this.tabPageStationCargo);
+            this.tabControl1.Controls.Add(this.tabPageQueudShips);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -54,14 +54,14 @@
             this.tabPageStationInfo.Text = "Info";
             this.tabPageStationInfo.UseVisualStyleBackColor = true;
             // 
-            // tabPageStationCargo
+            // tabPageQueudShips
             // 
-            this.tabPageStationCargo.Location = new System.Drawing.Point(4, 22);
-            this.tabPageStationCargo.Name = "tabPageStationCargo";
-            this.tabPageStationCargo.Size = new System.Drawing.Size(780, 613);
-            this.tabPageStationCargo.TabIndex = 1;
-            this.tabPageStationCargo.Text = "Cargo";
-            this.tabPageStationCargo.UseVisualStyleBackColor = true;
+            this.tabPageQueudShips.Location = new System.Drawing.Point(4, 22);
+            this.tabPageQueudShips.Name = "tabPageQueudShips";
+            this.tabPageQueudShips.Size = new System.Drawing.Size(780, 613);
+            this.tabPageQueudShips.TabIndex = 1;
+            this.tabPageQueudShips.Text = "Queued Ships";
+            this.tabPageQueudShips.UseVisualStyleBackColor = true;
             // 
             // FormStationEditor
             // 
@@ -80,6 +80,6 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageStationInfo;
-        private System.Windows.Forms.TabPage tabPageStationCargo;
+        private System.Windows.Forms.TabPage tabPageQueudShips;
     }
 }
