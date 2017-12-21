@@ -64,7 +64,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -103,6 +103,7 @@
     <Compile Include="DataStructure\SectorData.cs" />
     <Compile Include="DataStructure\ShipAmmunitionItemData.cs" />
     <Compile Include="DataStructure\ShipCockpitData.cs" />
+    <Compile Include="DataStructure\StationData.cs" />
     <Compile Include="DataStructure\ShipData.cs" />
     <Compile Include="DataStructure\ShipEngineData.cs" />
     <Compile Include="DataStructure\ShipInventoryItemData.cs" />
@@ -122,6 +123,12 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStationEditorQueued.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStationEditorQueued.Designer.cs">
+      <DependentUpon>FormStationEditorQueued.cs</DependentUpon>
     </Compile>
     <Compile Include="FormCatDatExport.cs">
       <SubType>Form</SubType>
@@ -171,11 +178,23 @@
     <Compile Include="FormShipEditorCargo.Designer.cs">
       <DependentUpon>FormShipEditorCargo.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStationEditorInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStationEditorInfo.Designer.cs">
+      <DependentUpon>FormStationEditorInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormShipEditorInfo.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormShipEditorInfo.Designer.cs">
       <DependentUpon>FormShipEditorInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormStationEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStationEditor.Designer.cs">
+      <DependentUpon>FormStationEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="FormUniverseEditor.cs">
       <SubType>Form</SubType>
@@ -219,8 +238,20 @@
     <EmbeddedResource Include="FormShipEditor.resx">
       <DependentUpon>FormShipEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormShipEditorCargo.resx">
+      <DependentUpon>FormShipEditorCargo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStationEditorInfo.resx">
+      <DependentUpon>FormStationEditorInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormShipEditorInfo.resx">
       <DependentUpon>FormShipEditorInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStationEditor.resx">
+      <DependentUpon>FormStationEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStationEditorQueued.resx">
+      <DependentUpon>FormStationEditorQueued.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormUniverseEditor.resx">
       <DependentUpon>FormUniverseEditor.cs</DependentUpon>
