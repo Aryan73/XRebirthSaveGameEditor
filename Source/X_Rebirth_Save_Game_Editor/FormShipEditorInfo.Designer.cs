@@ -107,6 +107,7 @@
             this.toolTip1.SetToolTip(this.comboBoxShipOwner, "The owner for the ship and it\'s crew is set.\r\nPlease let me know if there are sit" +
         "uations that do not work when changing ownership.");
             this.comboBoxShipOwner.SelectedIndexChanged += new System.EventHandler(this.comboBoxShipOwner_SelectedIndexChanged);
+            this.comboBoxShipOwner.SelectionChangeCommitted += new System.EventHandler(this.comboBoxShipOwner_SelectedIndexCommitted);
             // 
             // labelShipOwner
             // 

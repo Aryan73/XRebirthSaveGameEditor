@@ -85,6 +85,11 @@ namespace X_Rebirth_Save_Game_Editor
 
         private void comboBoxShipOwner_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //Ship.ShipOwner = comboBoxShipOwner.SelectedItem.ToString();
+        }
+
+        private void comboBoxShipOwner_SelectedIndexCommitted(object sender, EventArgs e)
+        {
             Ship.ShipOwner = comboBoxShipOwner.SelectedItem.ToString();
         }
     }
