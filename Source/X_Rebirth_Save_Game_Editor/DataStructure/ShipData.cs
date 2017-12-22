@@ -853,7 +853,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                     npcs = new List<NPCData>();
 
                     // Get All NPCs on ship
-                    foreach (XmlNode node in ShipNode.SelectNodes("//component[@class='npc']"))
+                    foreach (XmlNode node in ShipNode.SelectNodes(".//component[@class='npc']"))
                     {
                         npcs.Add(new NPCData(node.ParentNode, cde));
                     }
