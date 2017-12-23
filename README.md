@@ -55,4 +55,6 @@ Current functionality:
   * Search in the previewed file
 * Log
   * View log and error messages
+* General
+  * can handle new zipped savegame files
 
