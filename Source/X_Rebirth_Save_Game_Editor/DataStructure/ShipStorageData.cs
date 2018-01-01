@@ -40,7 +40,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 if (string.IsNullOrEmpty(ware))  { throw new Exception("ware must contain a value");  }
                 if (amount <= 0) { throw new Exception("amount must be greather than 0"); }
 
-                XmlNode summarydNode = ShipStorageNode.FirstChild.FirstChild.FirstChild;
+                XmlNode summarydNode = ShipStorageNode.SelectSingleNode(".//summary");
                 XmlNode newItemNode = null;
 
                 try
