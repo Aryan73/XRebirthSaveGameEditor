@@ -118,7 +118,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                     try
                     {
                         ShipStorageItems = new List<ShipStorageItemData>();
-                        foreach (XmlNode node in ShipStorageNode.FirstChild.FirstChild.FirstChild.ChildNodes)
+                        foreach (XmlNode node in ShipStorageNode.SelectNodes(".//ware"))
                         {
                             ShipStorageItems.Add(new ShipStorageItemData(node, cde));
                         }
