@@ -40,17 +40,31 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
                 if (string.IsNullOrEmpty(ware))  { throw new Exception("ware must contain a value");  }
                 if (amount <= 0) { throw new Exception("amount must be greather than 0"); }
 
-                XmlNode summarydNode = ShipStorageNode.SelectSingleNode(".//summary");
+                XmlNode summaryNode = ShipStorageNode.SelectSingleNode(".//summary");
                 XmlNode newItemNode = null;
+                if (summaryNode == null)
+                {
+                    XmlElement cargodNode = ShipStorageNode.OwnerDocument.CreateElement("cargo", "");
+                    ShipStorageNode.SelectSingleNode(".//component[@class='storage']").PrependChild(cargodNode);
+
+                    summaryNode = ShipStorageNode.OwnerDocument.CreateNode(XmlNodeType.Element, "summary", "");
+                    summaryNode.Attributes.Append(ShipStorageNode.OwnerDocument.CreateAttribute("state"));
+                    summaryNode.Attributes.Append(ShipStorageNode.OwnerDocument.CreateAttribute("parent"));
+                    summaryNode.Attributes.Append(ShipStorageNode.OwnerDocument.CreateAttribute("connection"));
+                    summaryNode.Attributes["state"].Value = "collapsed";
+                    summaryNode.Attributes["parent"].Value = ShipStorageNode.SelectSingleNode(".//component[@class='storage']").Attributes["id"].Value;
+                    summaryNode.Attributes["connection"].Value = "cargo";
+                    cargodNode.PrependChild(summaryNode);
+                }
 
                 try
                 {
-                    newItemNode = summarydNode.OwnerDocument.CreateNode(XmlNodeType.Element, "ware", "");
-                    newItemNode.Attributes.Append(summarydNode.OwnerDocument.CreateAttribute("ware"));
+                    newItemNode = summaryNode.OwnerDocument.CreateNode(XmlNodeType.Element, "ware", "");
+                    newItemNode.Attributes.Append(summaryNode.OwnerDocument.CreateAttribute("ware"));
                     newItemNode.Attributes["ware"].Value = ware;
                     if (amount > 1)
                     {
-                        newItemNode.Attributes.Append(summarydNode.OwnerDocument.CreateAttribute("amount"));
+                        newItemNode.Attributes.Append(summaryNode.OwnerDocument.CreateAttribute("amount"));
                         newItemNode.Attributes["amount"].Value = amount.ToString();
                     }
                 }
@@ -61,7 +75,7 @@ namespace X_Rebirth_Save_Game_Editor.DataStructure
 
                 try
                 {
-                    summarydNode.AppendChild(newItemNode);
+                    summaryNode.AppendChild(newItemNode);
                     ShipStorageItems.Add(new ShipStorageItemData(newItemNode, cde));
                 }
                 catch (Exception ex)
